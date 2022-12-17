@@ -29,4 +29,5 @@ dist/
 
 # Credentials
 credentials/
+firebase.js
 todo.txt

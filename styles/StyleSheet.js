@@ -1,0 +1,81 @@
+import { Dimensions, StyleSheet } from "react-native";
+
+export default StyleSheet.create({
+    buttonPrimary: {
+        height: 30,
+        marginVertical: 6,
+        padding: 6,
+        paddingHorizontal: 15,
+        backgroundColor: "#AA77FF",
+        color: "white",
+        width: "45%",
+        textAlign: "center",
+        marginHorizontal: "3%",
+      },
+      buttonPrimaryLarge: {
+        width: "95%",
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: -10,
+      },
+      buttonText: {
+        color: "white",
+        fontWeight: "700",
+        fontSize: 18,
+      },
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      },
+      containerInput: {
+        width: "80%",
+      },
+      containerButton: {
+        width: "80%",
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 40,
+      },
+      input: {
+        height: 50,
+        margin: 12,
+        padding: 10,
+        borderWidth: 1,
+        borderColor: "#AA77FF",
+      },
+      linkText: {
+        color: "black",
+        fontSize: 16,
+        marginVertical: 10,
+        width: "100%",
+      },
+      messageSuccess: {
+        width: "100%",
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        marginTop: 10,
+        marginBottom: 20,
+        backgroundColor: "#F5F5F5",
+        color: "green",
+      },
+      messageError: {
+        width: "100%",
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        marginTop: 10,
+        marginBottom: 20,
+        backgroundColor: "#F5F5F5",
+        color: "red",
+      },
+      messageWarning: {
+        width: "100%",
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        marginTop: 10,
+        marginBottom: 20,
+        backgroundColor: "#F5F5F5",
+        color: "orange",
+      },
+});

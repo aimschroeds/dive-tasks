@@ -11,7 +11,7 @@ import {
   import { auth } from "../firebase";
   import { signInWithEmailAndPassword } from "firebase/auth";
   
-  import StyleSheet from "../styles/StyleSheet";
+  import Styles from "../styles/Styles";
   
   // Adapted from: https://www.youtube.com/watch?v=ql4J6SpLXZA
   
@@ -42,44 +42,46 @@ import {
     }, [navigation]);
   
     return (
-      <KeyboardAvoidingView style={StyleSheet.container} behavior="padding">
+      <KeyboardAvoidingView style={Styles.container} behavior="padding">
         {/* Email and password input for login */}
-        <View style={StyleSheet.containerInput}>
+        <View style={Styles.containerInput}>
           <TextInput
             placeholder="Email"
             value={email}
             onChangeText={(text) => setEmail(text)}
-            style={StyleSheet.input}
+            style={Styles.input}
+            autoComplete="email"
           />
           <TextInput
             placeholder="Password"
             value={password}
             onChangeText={(text) => setPassword(text)}
-            style={StyleSheet.input}
+            style={Styles.input}
             secureTextEntry
+            autoComplete="current-password"
           />
         </View>
-        <View style={StyleSheet.containerButton}>
+        <View style={Styles.containerButton}>
           {/* Login button */}
           <TouchableOpacity
             onPress={handleLogin}
-            style={[StyleSheet.buttonPrimary, StyleSheet.buttonPrimaryLarge]}
+            style={[Styles.buttonPrimary, Styles.buttonPrimaryLarge]}
           >
-            <Text style={StyleSheet.buttonText}>Login</Text>
+            <Text style={Styles.buttonText}>Login</Text>
           </TouchableOpacity>
           {/* Login error message to user */}
           {errorMessage && (
-            <Text style={StyleSheet.messageError}>{errorMessage}</Text>
+            <Text style={Styles.messageError}>{errorMessage}</Text>
           )}
           {/* Button to redirect user to registration screen */}
           <TouchableOpacity onPress={() => navigation.navigate("Registration")}>
-            <Text style={StyleSheet.linkText}>
+            <Text style={Styles.linkText}>
               Want to Sign Up? Register.{" "}
             </Text>
           </TouchableOpacity>
           {/* Button to redirect user to password reset screen */}
           <TouchableOpacity onPress={() => navigation.navigate("Reset Password")}>
-            <Text style={StyleSheet.linkText}>
+            <Text style={Styles.linkText}>
               Forgotten Password? Reset Password.{" "}
             </Text>
           </TouchableOpacity>

@@ -8,7 +8,7 @@ import {
   import React, { useEffect, useState } from "react";
   import { auth } from "../firebase";
   import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
-  import StyleSheet from "../styles/StyleSheet";
+  import Styles from "../styles/Styles";
 
   // Adapted from: https://www.youtube.com/watch?v=ql4J6SpLXZA
   
@@ -52,39 +52,41 @@ import {
     };
   
     return (
-      <KeyboardAvoidingView style={StyleSheet.container} behavior="padding">
+      <KeyboardAvoidingView style={Styles.container} behavior="padding">
         {/* Email and password input fields */}
-        <View style={StyleSheet.containerInput}>
+        <View style={Styles.containerInput}>
           <TextInput
             placeholder="Email"
             value={email}
             onChangeText={(text) => setEmail(text)}
-            style={StyleSheet.input}
+            style={Styles.input}
+            autoComplete="email"
           />
           <TextInput
             placeholder="Password"
             value={password}
             onChangeText={(text) => setPassword(text)}
-            style={StyleSheet.input}
+            style={Styles.input}
             secureTextEntry
+            autoComplete="new-password"
           />
         </View>
-        <View style={StyleSheet.containerButton}>
+        <View style={Styles.containerButton}>
           {errorMessage && (
-            <Text style={StyleSheet.messageError}>{errorMessage}</Text>
+            <Text style={Styles.messageError}>{errorMessage}</Text>
           )}
           {successMessage && (
-            <Text style={StyleSheet.messageSuccess}>{successMessage}</Text>
+            <Text style={Styles.messageSuccess}>{successMessage}</Text>
           )}
           {/* Sign Up Button */}
           <TouchableOpacity
             onPress={handleSignUp}
-            style={[StyleSheet.buttonPrimary, StyleSheet.buttonPrimaryLarge]}
+            style={[Styles.buttonPrimary, Styles.buttonPrimaryLarge]}
           >
-            <Text style={StyleSheet.buttonText}>Register</Text>
+            <Text style={Styles.buttonText}>Register</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-            <Text style={StyleSheet.linkText}>
+            <Text style={Styles.linkText}>
               Already Signed Up? Login.{" "}
             </Text>
           </TouchableOpacity>

@@ -24,6 +24,13 @@ export default StyleSheet.create({
         fontWeight: "700",
         fontSize: 18,
       },
+      cellTitleText: {
+        fontSize: 14,
+        fontFamily: "Helvetica",
+        fontWeight: "bold",
+        color: "#AA77FF",
+        // marginBottom: 5,
+      },
     container: {
         flex: 1,
         justifyContent: "center",

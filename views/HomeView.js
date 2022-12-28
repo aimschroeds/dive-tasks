@@ -1,6 +1,7 @@
-import { Text, View } from 'react-native';
-import StyleSheet from '../styles/StyleSheet';
+import { Text, View, TextInput } from 'react-native';
+import Styles from '../styles/Styles';
 
+import Logout from '../components/Logout';
 /**
  * Home screen
  * @param {*} navigation
@@ -10,12 +11,15 @@ import StyleSheet from '../styles/StyleSheet';
 const HomeView = ({ navigation }) => {
 
     return (
-        <View style={StyleSheet.container}>
-            <Text style={StyleSheet.title}>Home</Text>
-            <Text style={StyleSheet.text}>Welcome to Dive Tasks!</Text>
-            <Text style={StyleSheet.text}>This is the home screen.</Text>
-            <Text style={StyleSheet.text}>You are logged in.</Text>
-           </View>
+        <View style={Styles.container}>
+            <View style={Styles.container}>
+                <Text style={Styles.title}>Home</Text>
+                <Text style={Styles.text}>Welcome to Dive Tasks!</Text>
+                <Text style={Styles.text}>This is the home screen.</Text>
+                <Text style={Styles.text}>You are logged in.</Text>
+            </View>
+            <Logout />
+        </View>
     )};
 
 export default HomeView;

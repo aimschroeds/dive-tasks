@@ -5,6 +5,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 import HomeView from '../views/HomeView';
+import PlansView from '../views/PlansView';
+import PlanAddView from '../views/PlanAddView';
 
 import { auth } from '../firebase';
 
@@ -30,6 +32,16 @@ function NavigationMain() {
                 tabBarLabel: 'Home',
                 tabBarIcon: ({ color }) => (
                 <MaterialCommunityIcons name="home" color={color} size={26} />
+                ),
+            }}
+      />    
+      <Tab.Screen
+          name='Plans'
+          component={PlansView}
+            options={{
+                tabBarLabel: 'Plans',
+                tabBarIcon: ({ color }) => (
+                <MaterialCommunityIcons name="certificate" color={color} size={26} />
                 ),
             }}
       />    

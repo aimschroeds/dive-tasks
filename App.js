@@ -12,6 +12,9 @@ import LoginView from "./views/LoginView";
 import RegistrationView from "./views/RegistrationView";
 import ResetPasswordView from "./views/ResetPasswordView";
 import NavigationMain from "./navigation/NavigationMain";
+import PlanAddView from "./views/PlanAddView";
+
+import { getHeaderTitle } from "./helpers/routeName";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,7 +29,10 @@ export default function App() {
             <Stack.Screen
               name="NavigationMain"
               component={NavigationMain}
-              options={{ headerShown: false }}
+              options={({ route }) => ({
+                headerShown: true,
+                title: getHeaderTitle(route),
+              })}
             />
           <Stack.Screen
             name="Login"
@@ -43,6 +49,9 @@ export default function App() {
             component={ResetPasswordView}
             options={{ headerShown: false }}
           />
+        </Stack.Group>
+        <Stack.Group screenOptions={{ presentation: "modal" }}>
+          <Stack.Screen name='Add Plan' component={PlanAddView} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

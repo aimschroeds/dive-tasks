@@ -8,6 +8,7 @@ import React, {
 import { navigation } from '@react-navigation/native';
 import { useHeaderHeight } from '@react-navigation/elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/native';
 
 import Styles from '../styles/Styles';
 /**
@@ -16,39 +17,10 @@ import Styles from '../styles/Styles';
     * @returns {JSX.Element}
  */
 
-const PlansView = ({ navigation }) => {
+const PlansView = ({ route, navigation }) => {
 const headerHeight = useHeaderHeight();
 const [keyboardStatus, setKeyboardStatus] = useState('not sett');
 console.log(headerHeight)
-
-
-useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-      setKeyboardStatus('Keyboard Shown');
-    });
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      setKeyboardStatus('Keyboard Hidden');
-    });
-
-    return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
-    };
-  }, []);
-  // Set header to contain add new plan button
-  useLayoutEffect(() => {
-    const unsubscribe = navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          style={{ marginRight: 20 }}
-          onPress={() => navigation.navigate("Add Plan")}
-        >
-            <MaterialCommunityIcons name="plus-thick" color="black" size={26} />
-        </TouchableOpacity>
-      ),
-    });
-    return unsubscribe;
-  }, [navigation]);
 
     return (
         <KeyboardAvoidingView 

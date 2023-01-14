@@ -11,18 +11,30 @@ import {
   SafeAreaView,
 } from "react-native";
 import { Cell, Section, TableView } from "react-native-tableview-simple";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import MilestoneAdd from "../components/MilestoneAdd";
+import { auth, db } from "../firebase";
+import { collection, addDoc, updateDoc, serverTimestamp } from "firebase/firestore"; 
 
 const PlanAddView = () => {
   const navigation = useNavigation();
   const [plan, setPlan] = useState({
     title: "",
     status: false,
-    milestones: [],
+    milestones: [{}],
   });
+  const [userId, setUserId] = useState(null);
+  const [messageError, setMessageError] = useState(null);
 
   console.log(plan);
+  console.log(auth);
+
+  useEffect(() => {
+    if (auth.currentUser)
+    {
+        setUserId(auth.currentUser.uid);
+    }
+  }, [auth.currentUser]);
 
   const setTitle = (text) => {
     setPlan({ ...plan, title: text });
@@ -37,6 +49,29 @@ const PlanAddView = () => {
       ],
     });
   };
+
+  // Save the plan to the database
+    const savePlan = async () => {
+        // If user is not identified, return
+        if (!userId)
+        {
+            setMessageError("You must be logged in to save a plan");
+            return;
+        }
+        // Add the plan to the database
+        const docRef = await addDoc(collection(db, "plans"), {
+            plan: {...plan, userId: userId, createdAt: serverTimestamp() },
+        });
+        // Clear the plan
+        setPlan({
+            title: "",
+            status: false,
+            milestones: [],
+        });
+        navigation.navigate("Plans");
+        };
+
+
 
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
@@ -108,12 +143,18 @@ const PlanAddView = () => {
             >
                 <Text style={[Styles.buttonText, { color: "white", margin: 10 }]}>Add Another Milestone</Text>
             </TouchableOpacity>
+            {/* Show error messaging if relevant */}
+            {messageError && (
+                <Text style={Styles.messageError}>
+                    {messageError}
+                </Text>
+            )}
             {/* Add a button which to save plan */}
             <TouchableOpacity
                 onPress={() => {
-                    addPlan();
+                    savePlan();
                 }}
-                style={[Styles.buttonPlan, {  }]}
+                style={[Styles.buttonPlan]}
             >
                 <Text style={[Styles.buttonText, { color: "white", margin: 10 }]}>Save Plan</Text>
             </TouchableOpacity>

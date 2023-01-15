@@ -147,6 +147,17 @@ export default StyleSheet.create({
         backgroundColor: "#F5F5F5",
         color: "orange",
       },
+      planContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 10,
+        marginVertical: 15,
+        marginHorizontal: 10,
+      },
+      planText: {
+        fontSize: 18,
+        marginLeft: 10,
+      },
       row: {
         alignItems: "center", justifyContent: "space-between", flexDirection: "row"
       },

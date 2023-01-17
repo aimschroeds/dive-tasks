@@ -154,6 +154,11 @@ export default StyleSheet.create({
         marginVertical: 15,
         marginHorizontal: 10,
       },
+      percentageText: {
+        fontSize: 14,
+        color: '#333',
+        fontWeight: 'bold',
+      },
       planText: {
         fontSize: 18,
         marginLeft: 10,

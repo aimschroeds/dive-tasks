@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db, auth } from '../firebase';
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 import Styles from '../styles/Styles';
 
@@ -62,24 +63,38 @@ const PlansView = ({ route, navigation }) => {
 
     return (
         <View>
-            {/* Display error message if it exists */}
-            {messageError && <Text style={Styles.messageError}>{messageError}</Text>}
-            
-            {/* Render list of plans */}
-            {plans && plans.map((plan) => (
-                <View key={plan.id} style={Styles.planContainer}>
-                {/* Display status icon based on plan's completion status */}
-                <MaterialCommunityIcons
-                    name={plan.plan.status ? "check-circle" : "circle-outline"}
-                    size={24}
-                    color={plan.plan.status ? "green" : "gray"}
-                />
-                
-                {/* Display plan title */}
+          {/* Display error message if it exists */}
+          {messageError && <Text style={Styles.messageError}>{messageError}</Text>}
+          
+          {/* Render list of plans */}
+          {plans && plans.map((plan) => {
+            // Calculate completion percentage
+            const totalMilestones = plan.plan.milestones.length;
+            const completedMilestones = plan.plan.milestones.filter(milestone => milestone.status).length;
+            const completionPercentage = (completedMilestones / totalMilestones) * 100;
+      
+            return (
+              <View key={plan.id} style={Styles.planContainer}>
+                <AnimatedCircularProgress
+                  size={50}
+                  width={5}
+                  fill={completionPercentage}
+                  tintColor={completionPercentage === 100 ? 'green' : '#3498db'}
+                  backgroundColor="#e0e0e0"
+                  rotation={0}
+                >
+                  {() => (
+                    <Text style={Styles.percentageText}>
+                      {Math.round(completionPercentage)}%
+                    </Text>
+                  )}
+                </AnimatedCircularProgress>
                 <Text style={Styles.planText}>{plan.plan.title}</Text>
-                </View>
-            ))}
-            </View>
-                )};
+              </View>
+            );
+          })}
+        </View>
+      );
+    };
 
     export default PlansView;

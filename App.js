@@ -3,9 +3,11 @@ import { StyleSheet, Text, View, StatusBar, TouchableOpacity } from "react-nativ
 import {
   NavigationContainer,
   useNavigationContainerRef,
+  useNavigation,
 } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { auth } from "./firebase";
+import { onAuthStateChanged } from "firebase/auth";
 import { registerRootComponent } from "expo";
 
 import LoginView from "./views/LoginView";
@@ -13,6 +15,7 @@ import RegistrationView from "./views/RegistrationView";
 import ResetPasswordView from "./views/ResetPasswordView";
 import NavigationMain from "./navigation/NavigationMain";
 import PlanAddView from "./views/PlanAddView";
+import PlanView from "./views/PlanView";
 
 import { getHeaderTitle } from "./helpers/getHeaderTitle";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -57,6 +60,12 @@ export default function App() {
         </Stack.Group>
         <Stack.Group screenOptions={{ presentation: "modal" }}>
           <Stack.Screen name='Add Plan' component={PlanAddView} />
+        </Stack.Group>
+        <Stack.Group>
+          <Stack.Screen 
+            name='View Plan' 
+            component={PlanView} 
+          />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

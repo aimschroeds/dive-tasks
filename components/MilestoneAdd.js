@@ -13,10 +13,10 @@ import Skills from "./Skills";
 import DeleteMilestone from "./DeleteMilestone";
 
 const MilestoneAdd = ({ milestone, setMilestone, index, deleteMilestone }) => {
-  const [milestoneName, setMilestoneName] = useState(null);
-  const [milestoneStatus, setMilestoneStatus] = useState(false);
-  const [milestoneType, setMilestoneType] = useState(null);
-  const [skills, setSkills] = useState([]);
+  const [milestoneName, setMilestoneName] = useState(milestone.name||"");
+  const [milestoneStatus, setMilestoneStatus] = useState(milestone.status||false);
+  const [milestoneType, setMilestoneType] = useState(milestone.type||null);
+  const [skills, setSkills] = useState(milestone.skills||[]);
   const headerTitle = "Milestone " + (index + 1);
     
 // If any element of the milestone object is updated, update the milestone object
@@ -28,6 +28,7 @@ const MilestoneAdd = ({ milestone, setMilestone, index, deleteMilestone }) => {
             skills: skills,
         });
     }, [milestoneName, milestoneStatus, milestoneType, skills]);
+
 
   return (
     <Section

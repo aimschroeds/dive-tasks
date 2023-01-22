@@ -14,10 +14,13 @@ import { Cell, Section, TableView } from "react-native-tableview-simple";
 import React, { useState, useRef, useEffect } from "react";
 import MilestoneAdd from "../components/MilestoneAdd";
 import { auth, db } from "../firebase";
-import { collection, addDoc, updateDoc, serverTimestamp } from "firebase/firestore"; 
+import { doc, collection, getDoc, addDoc, setDoc, updateDoc, serverTimestamp } from "firebase/firestore"; 
 
-const PlanAddView = () => {
+const PlanAddView = ( { route } ) => {
   const navigation = useNavigation();
+  const planId = route.params?.planId;
+  const isEditMode = !!planId;
+
   const [plan, setPlan] = useState({
     title: "",
     status: false,
@@ -26,15 +29,30 @@ const PlanAddView = () => {
   const [userId, setUserId] = useState(null);
   const [messageError, setMessageError] = useState(null);
 
-  console.log(plan);
-  console.log(auth);
-
   useEffect(() => {
     if (auth.currentUser)
     {
         setUserId(auth.currentUser.uid);
     }
   }, [auth.currentUser]);
+
+  // Fetch the plan data when in edit mode
+  useEffect(() => {
+    if (isEditMode) {
+      const fetchPlanData = async () => {
+        const docRef = doc(db, "plans", planId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          setPlan(docSnap.data());
+        } else {
+          console.log("No such document!");
+        }
+      };
+
+      fetchPlanData();
+    }
+  }, [isEditMode, planId]);
 
   const setTitle = (text) => {
     setPlan({ ...plan, title: text });
@@ -58,10 +76,21 @@ const PlanAddView = () => {
             setMessageError("You must be logged in to save a plan");
             return;
         }
-        // Add the plan to the database
-        const docRef = await addDoc(collection(db, "plans"), {
-            plan: {...plan, userId: userId, createdAt: serverTimestamp() },
-        });
+        if (isEditMode) {
+            // Update the plan in the database
+            const docRef = doc(db, "plans", planId);
+            await updateDoc(docRef, {
+              ...plan,
+              updatedAt: serverTimestamp(),
+            });
+          } else {
+            // Add the plan to the database
+            const docRef = await addDoc(collection(db, "plans"), {
+              ...plan,
+              userId: userId,
+              createdAt: serverTimestamp(),
+            });
+          }
         // Clear the plan
         setPlan({
             title: "",
@@ -70,8 +99,6 @@ const PlanAddView = () => {
         });
         navigation.navigate("Plans");
         };
-
-
 
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>

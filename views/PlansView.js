@@ -1,9 +1,11 @@
-import { Text, View } from 'react-native';
-import React, { useEffect, useState } from "react";
+import { Text, TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from "react";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db, auth } from '../firebase';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import { useFocusEffect } from '@react-navigation/native';
+import { onAuthStateChanged } from "firebase/auth";
 
 import Styles from '../styles/Styles';
 
@@ -22,22 +24,48 @@ const PlansView = ({ route, navigation }) => {
     const [userId, setUserId] = useState(null);
     const [messageError, setMessageError] = useState(null);
 
+    useEffect(() => {
+        // Listen for auth state changes
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in
+                setUserId(user.uid);
+            } else {
+                // User is signed out
+                setUserId(null);
+                navigation.navigate('Login');
+            }
+        })
+        return unsubscribe;
+    }, [navigation]);
+    // Set userId whenever this screen renders
+    useEffect(() => {
+        if (auth.currentUser) {
+            setUserId(auth.currentUser.uid);
+        }
+    }, [navigation]);
+
     // Update userId when auth.currentUser changes
     useEffect(() => {
         if (auth.currentUser) {
             setUserId(auth.currentUser.uid);
         }
-    }, [auth.currentUser]);
+    }, [auth.currentUser, navigation]);
 
     // Fetch plans when userId is set or updated
-    useEffect(() => {
-        if (userId) {
-            getPlans();
-        }
-    }, [userId]);
+    useFocusEffect(
+        useCallback(() => {
+            console.log(userId)
+            if (userId) {
+                getPlans();
+            }
+            return () => {};
+        }, [userId, navigation])
+    );
 
     // Fetch plans from the database for the current user
     const getPlans = async () => {
+        console.log("Fetching plans for user: " + userId)
         // Return early if userId is not set
         if (!userId) {
             setMessageError("UserId is null");
@@ -45,7 +73,7 @@ const PlansView = ({ route, navigation }) => {
         }
         
         // Define query to fetch plans for the current user
-        const q = query(collection(db, "plans"), where("plan.userId", "==", userId));
+        const q = query(collection(db, "plans"), where("userId", "==", userId));
         
         // Execute query and store results in fetchedPlans
         const querySnapshot = await getDocs(q);
@@ -69,28 +97,30 @@ const PlansView = ({ route, navigation }) => {
           {/* Render list of plans */}
           {plans && plans.map((plan) => {
             // Calculate completion percentage
-            const totalMilestones = plan.plan.milestones.length;
-            const completedMilestones = plan.plan.milestones.filter(milestone => milestone.status).length;
+            const totalMilestones = plan.milestones.length;
+            const completedMilestones = plan.milestones.filter(milestone => milestone.status).length;
             const completionPercentage = (completedMilestones / totalMilestones) * 100;
       
             return (
-              <View key={plan.id} style={Styles.planContainer}>
-                <AnimatedCircularProgress
-                  size={50}
-                  width={5}
-                  fill={completionPercentage}
-                  tintColor={completionPercentage === 100 ? 'green' : '#3498db'}
-                  backgroundColor="#e0e0e0"
-                  rotation={0}
-                >
-                  {() => (
-                    <Text style={Styles.percentageText}>
-                      {Math.round(completionPercentage)}%
-                    </Text>
-                  )}
-                </AnimatedCircularProgress>
-                <Text style={Styles.planText}>{plan.plan.title}</Text>
-              </View>
+              <TouchableOpacity key={plan.id} onPress={() => navigation.navigate('View Plan', { planId: plan.id })}>
+                <View style={Styles.planContainer}>
+                  <AnimatedCircularProgress
+                    size={50}
+                    width={5}
+                    fill={completionPercentage}
+                    tintColor={completionPercentage === 100 ? 'green' : '#3498db'}
+                    backgroundColor="#e0e0e0"
+                    rotation={0}
+                  >
+                    {() => (
+                      <Text style={Styles.percentageText}>
+                        {Math.round(completionPercentage)}%
+                      </Text>
+                    )}
+                  </AnimatedCircularProgress>
+                  <Text style={Styles.planText}>{plan.title}</Text>
+                </View>
+              </TouchableOpacity>
             );
           })}
         </View>

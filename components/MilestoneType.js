@@ -5,17 +5,11 @@ import { StyleSheet } from "react-native";
 
 import Styles from "../styles/Styles";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import milestoneTypes from "../data/milestoneTypes";
 
 
 
 const MilestoneType = ({ milestoneType, setMilestoneType }) => {
-  const milestoneTypes = [
-    { type: "Confined Water Dive", icon: "pool", label: "Confined Water Dive" },
-    { type: "Theory", icon: "book-open-page-variant", label: "Theory" },
-    { type: "Open Water Dive", icon: "waves-arrow-right", label: "Open Water Dive" },
-    { type: "Exam", icon: "clipboard-text-outline", label: "Exam" },
-    { type: "Other", icon: "dots-horizontal", label: "Other" },
-  ];
   
   const styles = StyleSheet.create({
     touchableOpacity: {

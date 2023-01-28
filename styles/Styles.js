@@ -61,6 +61,35 @@ export default StyleSheet.create({
         fontWeight: "400",
         fontSize: 12,
       },
+      carouselContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 20,
+      },
+      carouselSlider: {
+        width: '90%',
+        height: 40,
+      },
+      carouselImage: {
+        width: '90%',
+        height: 200,
+        borderRadius: 10,
+      },
+      uploadImageButtonContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 20,
+      },
+      uploadImageButton: {
+        backgroundColor: '#AA77FF',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 10,
+      },
+      uploadImageButtonText: {
+        color: '#FFF',
+        fontSize: 16,
+      },      
       cellTitleText: {
         fontSize: 14,
         fontFamily: "Helvetica",
@@ -147,6 +176,88 @@ export default StyleSheet.create({
         backgroundColor: "#F5F5F5",
         color: "orange",
       },
+      noImagesText: {
+        fontSize: 18,
+        fontStyle: 'italic',
+        textAlign: 'center',
+        color: 'gray',
+      },
+      image: {
+        width: 150,
+        height: 150,
+        resizeMode: 'cover',
+        borderRadius: 10,
+        marginRight: 10,
+      },
+      
+      milestoneItemContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        marginVertical: 8,
+        paddingHorizontal: 16,
+      },
+      milestoneIcon: {
+        marginRight: 8,
+        paddingVertical: 16,
+      },
+      milestoneName: {
+        flex: 1,
+        fontSize: 18,
+        fontWeight: "bold",
+        textAlign: "left",
+        marginLeft: -8,
+        paddingVertical: 16,
+      },
+      milestoneCheckbox: {
+        backgroundColor: "transparent",
+        borderWidth: 0,
+        marginRight: 8,
+        // padding: 0,
+      },
+      milestoneContent: {
+        flex: 1,
+        marginLeft: 8,
+      },
+      notesContainer: {
+        paddingHorizontal: 16,
+        paddingTop: 8,
+        paddingBottom: 24,
+      },
+      notesTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+      },
+      notesInput: {
+        marginTop: 8,
+        borderColor: '#ccc',
+        borderWidth: 1,
+        borderRadius: 4,
+        minHeight: 120,
+        padding: 8,
+      },
+
+      skillCheckbox: {
+        backgroundColor: 'transparent',
+        borderWidth: 0,
+        padding: 0,
+        margin: 0,
+        marginLeft: -8,
+        marginRight: 8, 
+      },
+      skillItemContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        marginVertical: 4,
+      },
+      skillName: {
+        fontSize: 14,
+      },
+      skillStatus: {
+        fontSize: 14,
+        color: "gray",
+      },
       planContainer: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -154,6 +265,31 @@ export default StyleSheet.create({
         marginVertical: 15,
         marginHorizontal: 10,
       },
+      planDetailsContainer: {
+        padding: 20,
+        backgroundColor: '#f0f0f0',
+        borderRadius: 10,
+        margin: 10,
+    },
+    planDetailsTitle: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    planDetailsStatus: {
+        fontSize: 18,
+        color: 'green',
+        marginBottom: 10,
+    },
+    planDetailsCompletion: {
+        fontSize: 18,
+        marginBottom: 10,
+    },
+    planDetailsDate: {
+        fontSize: 14,
+        color: '#808080',
+    },
+    
       percentageText: {
         fontSize: 14,
         color: '#333',

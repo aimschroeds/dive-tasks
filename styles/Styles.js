@@ -29,6 +29,9 @@ export default StyleSheet.create({
         justifyContent: "center",
         marginTop: -10,
       },
+      buttonPrimarySmall: {
+        width: "30%",
+      },
       buttonSecondary: {
         backgroundColor: "#AA77FF", alignItems: "center", marginHorizontal: 20, marginVertical: 15,
       },
@@ -195,10 +198,10 @@ export default StyleSheet.create({
         alignItems: "center",
         justifyContent: "flex-start",
         marginVertical: 8,
-        paddingHorizontal: 16,
+        paddingHorizontal: 0,
       },
       milestoneIcon: {
-        marginRight: 8,
+        marginLeft: 8,
         paddingVertical: 16,
       },
       milestoneName: {
@@ -207,7 +210,7 @@ export default StyleSheet.create({
         fontWeight: "bold",
         textAlign: "left",
         marginLeft: -8,
-        paddingVertical: 16,
+        paddingVertical: 12,
       },
       milestoneCheckbox: {
         backgroundColor: "transparent",
@@ -217,10 +220,10 @@ export default StyleSheet.create({
       },
       milestoneContent: {
         flex: 1,
-        marginLeft: 8,
+        marginLeft: 0,
       },
       notesContainer: {
-        paddingHorizontal: 16,
+        paddingHorizontal: 8,
         paddingTop: 8,
         paddingBottom: 24,
       },
@@ -371,4 +374,108 @@ export default StyleSheet.create({
       toggleUnselected: {
         backgroundColor: "#F5F5F5",
       },
+      uploadImageContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 2,
+        borderColor: '#AA77FF',
+        borderStyle: 'dashed',
+        borderRadius: 10,
+         // Set width to full screen
+         width: "90%",
+        height: 80,
+        marginBottom: 20,
+        marginRight: 10,
+        marginHorizontal: 16,
+      },
+      uploadImageIcon: {
+        color: '#AA77FF',
+      },
+      imageRowContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+      },
+      imageScroll: {
+        flexDirection: 'row',
+      },
+      imageDeleteButton: {
+        position: 'absolute',
+        top: 5,
+        right: 15,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        borderRadius: 15,
+        padding: 5,
+      },
+      imageScrollContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+    
+      imageScrollButtonLeft: {
+        position: 'absolute',
+        left: 0,
+        zIndex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        borderRadius: 15,
+        padding: 5,
+      },
+    
+      imageScrollButtonRight: {
+        position: 'absolute',
+        right: 0,
+        zIndex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        borderRadius: 15,
+        padding: 5,
+      },
+      paddingVertical: {
+        // marginVertical: 5,
+        paddingVertical: 15,
+      },
+      mapSetMarker: {
+        width: Dimensions.get("window").width,
+        height: Dimensions.get("window").height - 250,
+      },
+      mapViewContainer: {
+        paddingHorizontal: 20,
+        flexDirection: "column",
+        alignContent: "center",
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 70,
+      },
+      mapViewTextContainer: {
+        flexDirection: "row",
+        alignItems: "flex-start",
+      },
+      section: {
+        // flex: 1,
+        flexDirection: "row",
+        justifyContent: "center",
+        // alignContent: 'space-between',
+        // marginTop: -30,
+      },
+      locationButtonText: {
+        color: "white",
+        marginLeft: 10,
+      },
+      plusButtonText: {
+        color: "#AA77FF",
+        paddingHorizontal: 10,
+      },
+      map: {
+        width: Dimensions.get("window").width,
+        height: Dimensions.get("window").height - 200,
+      },
+      locationLabel: {
+        backgroundColor: '#AA77FF', // Choose the background color you prefer
+        color: 'white', // Choose the text color you prefer
+        paddingHorizontal: 10,
+        paddingVertical: 4,
+        borderRadius: 20, // This will make the corners very rounded
+        marginBottom: 10,
+      },
+      
 });

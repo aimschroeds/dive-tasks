@@ -16,6 +16,8 @@ import ResetPasswordView from "./views/ResetPasswordView";
 import NavigationMain from "./navigation/NavigationMain";
 import PlanAddView from "./views/PlanAddView";
 import PlanView from "./views/PlanView";
+import LocationNew from "./views/LocationNew";
+import LocationSelection from "./views/LocationSelection";
 
 import { getHeaderTitle } from "./helpers/getHeaderTitle";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -60,12 +62,15 @@ export default function App() {
         </Stack.Group>
         <Stack.Group screenOptions={{ presentation: "modal" }}>
           <Stack.Screen name='Add Plan' component={PlanAddView} />
+          <Stack.Screen name='Location New' component={LocationNew} />
+          <Stack.Screen name='Location Selection' component={LocationSelection} />
         </Stack.Group>
         <Stack.Group>
           <Stack.Screen 
             name='View Plan' 
             component={PlanView} 
           />
+          
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

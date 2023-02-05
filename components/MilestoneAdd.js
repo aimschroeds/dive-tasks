@@ -9,7 +9,7 @@ import Styles from "../styles/Styles";
 import { useNavigation } from "@react-navigation/native";
 import StatusToggle from "./StatusToggle";
 import MilestoneType from "./MilestoneType";
-import Skills from "./Skills";
+import SkillsAdd from "./SkillsAdd";
 import DeleteMilestone from "./DeleteMilestone";
 
 const MilestoneAdd = ({ milestone, setMilestone, index, deleteMilestone }) => {
@@ -60,7 +60,7 @@ const MilestoneAdd = ({ milestone, setMilestone, index, deleteMilestone }) => {
             milestoneType={milestoneType}
             setMilestoneType={setMilestoneType}
         />
-        <Skills
+        <SkillsAdd
             skills={skills}
             setSkills={setSkills}
         />

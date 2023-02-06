@@ -31,3 +31,4 @@ dist/
 credentials/
 firebase.js
 todo.txt
+config/

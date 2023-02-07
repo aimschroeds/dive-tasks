@@ -16,15 +16,18 @@ import MilestoneAdd from "../components/MilestoneAdd";
 import { auth, db } from "../firebase";
 import { doc, collection, getDoc, addDoc, setDoc, updateDoc, serverTimestamp } from "firebase/firestore"; 
 
-const PlanAddView = ( { route } ) => {
+const PlanFormView = ( { route } ) => {
   const navigation = useNavigation();
   const planId = route.params?.planId;
   const isEditMode = !!planId;
+  const [loading, setLoading] = useState(isEditMode);
 
   const [plan, setPlan] = useState({
     title: "",
     status: false,
-    milestones: [{}],
+    milestones: [
+      { name: "", status: false, type: "", skills: [] },
+    ],
   });
   const [userId, setUserId] = useState(null);
   const [messageError, setMessageError] = useState(null);
@@ -45,6 +48,7 @@ const PlanAddView = ( { route } ) => {
 
         if (docSnap.exists()) {
           setPlan(docSnap.data());
+          setLoading(false);
         } else {
           console.log("No such document!");
         }
@@ -99,6 +103,14 @@ const PlanAddView = ( { route } ) => {
         });
         navigation.navigate("Plans");
         };
+
+        if (loading) {
+          return (
+            <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+              <Text>Loading...</Text>
+            </View>
+          );
+        }
 
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
@@ -190,4 +202,4 @@ const PlanAddView = ( { route } ) => {
     </SafeAreaView>
     )}
 
-export default PlanAddView;
+export default PlanFormView;

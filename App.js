@@ -14,7 +14,7 @@ import LoginView from "./views/LoginView";
 import RegistrationView from "./views/RegistrationView";
 import ResetPasswordView from "./views/ResetPasswordView";
 import NavigationMain from "./navigation/NavigationMain";
-import PlanAddView from "./views/PlanAddView";
+import PlanFormView from "./views/PlanFormView";
 import PlanView from "./views/PlanView";
 import LocationNew from "./views/LocationNew";
 import LocationSelection from "./views/LocationSelection";
@@ -22,13 +22,23 @@ import LocationSelection from "./views/LocationSelection";
 import { getHeaderTitle } from "./helpers/getHeaderTitle";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import GetHeaderRightButton from "./components/GetHeaderRightButton";
-
+import * as Calendar from 'expo-calendar';
 
 const Stack = createStackNavigator();
 
 export default function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    (async () => {
+      const { status } = await Calendar.requestCalendarPermissionsAsync();
+      if (status === 'granted') {
+        const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
+        console.log('Here are all your calendars:');
+        console.log({ calendars });
+      }
+    })();
+  }, []);
 
   return (
     <NavigationContainer>
@@ -61,7 +71,7 @@ export default function App() {
           />
         </Stack.Group>
         <Stack.Group screenOptions={{ presentation: "modal" }}>
-          <Stack.Screen name='Add Plan' component={PlanAddView} />
+          <Stack.Screen name='Plan Form' component={PlanFormView} />
           <Stack.Screen name='Location New' component={LocationNew} />
           <Stack.Screen name='Location Selection' component={LocationSelection} />
         </Stack.Group>

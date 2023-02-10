@@ -22,11 +22,21 @@ const GetHeaderRightButton = (props) => {
       routeName == 'Plans' ? (
         <TouchableOpacity
                     style={{ marginRight: 15 }}
-                    onPress={() => navigation.navigate("Add Plan")}
+                    onPress={() => navigation.navigate("Plan Form")}
                 >
-                    <MaterialCommunityIcons name="plus-thick" color="black" size={26} />
+                    <MaterialCommunityIcons name="plus-thick" color="#AA77FF" size={26} />
         </TouchableOpacity>
-      ) : (
+      ) : 
+      routeName == 'Profile' ? (
+        <TouchableOpacity
+                    style={{ marginRight: 15 }}
+                    onPress={() => navigation.navigate("Edit Profile")}
+                >
+                    <MaterialCommunityIcons name="account-edit" color="#AA77FF" size={26} />
+        </TouchableOpacity>
+      )
+      :
+      (
         <Text> Home</Text>
       )
 

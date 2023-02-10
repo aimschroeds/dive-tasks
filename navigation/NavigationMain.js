@@ -6,7 +6,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import HomeView from '../views/HomeView';
 import PlansView from '../views/PlansView';
-import PlanAddView from '../views/PlanAddView';
+import PlanFormView from '../views/PlanFormView';
+import ProfileView from '../views/ProfileView';
 
 import { auth } from '../firebase';
 
@@ -21,7 +22,7 @@ function NavigationMain() {
     return (
     <Tab.Navigator
     initialRouteName='Home'
-    activeColor="#C9EEFF"
+    activeColor="#311D50"
     inactiveColor="#3e2465"
     barStyle={{ backgroundColor: '#AA77FF' }}
     >
@@ -45,6 +46,16 @@ function NavigationMain() {
                 ),
             }}
       />    
+      <Tab.Screen
+          name='Profile'
+          component={ProfileView}
+            options={{
+                tabBarLabel: 'Profile',
+                tabBarIcon: ({ color }) => (
+                <MaterialCommunityIcons name="account" color={color} size={26} />
+                ),
+            }}
+      />
     </Tab.Navigator>
     );}
 

@@ -13,6 +13,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { CheckBox } from "react-native-elements";
 import { format } from "date-fns";
 import { onAuthStateChanged } from "@firebase/auth";
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+
 
 // Firebase imports
 import { doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
@@ -37,6 +39,7 @@ import {
   calculateCompletionPercentage,
 } from "../helpers/milestoneHelpers";
 import { renderSkills, areAllSkillsComplete } from "../helpers/skillsHelpers";
+import { addToCalendarExpo } from "../helpers/calendarHelpers";
 
 const PlanView = ({ route }) => {
   const navigation = useNavigation();
@@ -51,8 +54,10 @@ const PlanView = ({ route }) => {
   });
   const [celebrationVisible, setCelebrationVisible] = useState(false);
   const [imageUrls, setImageUrls] = useState([]);
-  const [locationModalVisible, setLocationModalVisible] = useState(false);
   const [selectedMilestoneLocationIndex, setSelectedMilestoneLocationIndex] = useState(null);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [selectedMilestoneDateIndex, setSelectedMilestoneDateIndex] = useState(null);
+
 
 
   
@@ -72,9 +77,10 @@ const PlanView = ({ route }) => {
   }, [milestoneCompletion.percentage]);
 
   useEffect(() => {
-    if (plan) {
+    // Check if plan.images exists
+    if (plan?.images) {
       fetchImageUrls();
-      console.log("plan: ", plan);
+      // console.log("plan: ", plan);
     }
   }, [plan]);
 
@@ -86,7 +92,7 @@ const PlanView = ({ route }) => {
           size={24}
           color="#AA77FF"
           style={{ marginRight: 20 }}
-          onPress={() => navigation.navigate("Add Plan", { planId: planId })}
+          onPress={() => navigation.navigate("Plan Form", { planId: planId })}
         />
       ),
     });
@@ -136,6 +142,59 @@ const PlanView = ({ route }) => {
     setImageUrls(urls.filter((url) => url !== null));
   };
 
+  const showDatePicker = (milestoneIndex) => {
+    setSelectedMilestoneDateIndex(milestoneIndex);
+  };
+
+  const scheduleMilestone = async (date, milestoneIndex) => {
+    setSelectedMilestoneDateIndex(null);
+  
+    const docRef = doc(db, "plans", planId);
+    const updatedMilestones = plan.milestones.map((milestone, index) => {
+      if (index === milestoneIndex) {
+        return { ...milestone, scheduledAt: date };
+      }
+      return milestone;
+    });
+  
+    await updateDoc(docRef, {
+      milestones: updatedMilestones,
+    });
+  
+    setPlan({ ...plan, milestones: updatedMilestones });
+  
+    // Get the updated milestone
+    const updatedMilestone = updatedMilestones[milestoneIndex];
+  
+    // Concatenate plan and milestone names
+    const eventTitle = `${plan.title} - ${updatedMilestone.name}`;
+  
+    // Create a location description string
+    const locationDescription = updatedMilestone.geo
+      ? [
+          updatedMilestone.geo.name,
+          updatedMilestone.geo.street,
+          updatedMilestone.geo.streetNumber,
+          updatedMilestone.geo.postalCode,
+          updatedMilestone.geo.city,
+          updatedMilestone.geo.region,
+          updatedMilestone.geo.country,
+        ]
+          .filter((part) => part !== null && part !== undefined)
+          .join(', ')
+      : '';
+  
+    // Calculate the end date by adding 1 hour to the start date
+    const startDate = new Date(updatedMilestone.scheduledAt);
+    const endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
+  
+    // Add the event to the calendar
+    addToCalendarExpo(eventTitle, startDate, endDate, locationDescription);
+  };
+  
+  
+  
+  
   const getPlan = async () => {
     try {
       const docRef = doc(db, "plans", planId);
@@ -234,7 +293,7 @@ const PlanView = ({ route }) => {
   };
 
   const updateNotes = async (text) => {
-    console.log("Updating notes:", text);
+    // console.log("Updating notes:", text);
     try {
       const docRef = doc(db, "plans", planId);
       await updateDoc(docRef, {
@@ -248,8 +307,8 @@ const PlanView = ({ route }) => {
   };
 
   const updateLocation = async (location, milestoneIndex) => {
-    console.log("Updating milestone location:", location)
-    console.log("Milestone index:", milestoneIndex)
+    // console.log("Updating milestone location:", location)
+    // console.log("Milestone index:", milestoneIndex)
     try {
       const docRef = doc(db, "plans", planId);
       const updatedMilestones = plan.milestones.map((milestone, index) => {
@@ -258,7 +317,7 @@ const PlanView = ({ route }) => {
         }
         return milestone;
       });
-      console.log("Updated milestones:", updatedMilestones)
+      // console.log("Updated milestones:", updatedMilestones)
       await updateDoc(docRef, {
         milestones: updatedMilestones,
       });
@@ -290,18 +349,18 @@ const PlanView = ({ route }) => {
                 {/* Existing plan details code */}
                 <Text style={Styles.planText}>{plan.title}</Text>
 
-                <View style={{ flex: 1 }}>
+                
                   {plan.milestones.map((item, index) => (
-                    <>
+                    <View style={{ flex: 1 }} key={`${index}-${item.name}`}>
                     <Milestone
                       // item, index, toggleMilestoneStatus, renderMilestoneIcon, toggleSkillStatus
-                      key={`${index}-${item.name}`}
                       index={index}
                       item={item}
                       renderMilestoneIcon={renderMilestoneIcon}
                       toggleMilestoneStatus={toggleMilestoneStatus}
                       toggleSkillStatus={toggleSkillStatus}
                       locationSelectionVisible={()=>toggleLocationModal(index)}
+                      onSchedule={showDatePicker}
                     />
                     <Modal
                         animationType="slide"
@@ -313,25 +372,33 @@ const PlanView = ({ route }) => {
                           onClose={() => setSelectedMilestoneLocationIndex(null)}
                           onSelect={(locationData) => {
                             updateLocation(locationData, selectedMilestoneLocationIndex);
-                            setLocationModalVisible(false);
+                            setSelectedMilestoneLocationIndex(null);
                           }}
                           selectedLocation={plan.milestones[selectedMilestoneLocationIndex]?.geo}
                         />
-                      </Modal></>
+                      </Modal>
+                      <DateTimePickerModal
+                        isVisible={selectedMilestoneDateIndex !== null}
+                        mode="datetime"
+                        onConfirm={(date) => scheduleMilestone(date, selectedMilestoneDateIndex)}
+                        onCancel={() => selectedMilestoneDateIndex(null)}
+                      />
+                      </View>
                   ))}
-                </View>
+                
                 <Notes notes={plan.notes} updateNotes={updateNotes} />
                 <ImageUploader
                   entityId={planId}
                   entityPath="plans"
                   images={plan.images}
-                  onImagesUploaded={handleImagesUploaded}
+                  onImagesUploaded={(images)=>handleImagesUploaded(images)}
                 />
-                <Images
+                { plan.images.length > 0 && <Images
                   images={plan.images}
                   entityId={planId}
                   entityPath="plans"
-                />
+                  refreshImages={getPlan}
+                />}
               </View>
             </>
           )}

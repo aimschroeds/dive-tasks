@@ -17,7 +17,9 @@ const getStorageRefFromUrl = (storage, url) => {
 
 export const deleteImage = async (entityId, entityPath, imageUrl) => {
   const storage = getStorage();
-  const storageRef = getStorageRefFromUrl(storage, imageUrl);
+  // Strip query from URL
+  image = imageUrl.split('?')[0];
+  const storageRef = getStorageRefFromUrl(storage, image);
 
   await deleteObject(storageRef);
 

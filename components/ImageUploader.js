@@ -9,9 +9,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 const ImageUploader = ({ entityId, entityPath, images, onImagesUploaded }) => {
   const { selectedImages, pickImages } = useImagePicker();
-
+  
   useEffect(() => {
     if (selectedImages.length > 0) {
+      console.log('Selected images:', selectedImages);
       handleImageUpload(selectedImages);
     }
   }, [selectedImages]);
@@ -23,7 +24,9 @@ const ImageUploader = ({ entityId, entityPath, images, onImagesUploaded }) => {
       for (const image of images) {
         const response = await fetch(image.uri);
         const blob = await response.blob();
-        const fileName = new Date().getTime();
+        // Set filename to current timestamp + number of image in array
+        const fileName = `${new Date().getTime()}_${images.indexOf(image)}`;
+        // const fileName = new Date().getTime();
         const storageRef = ref(storage, `${entityPath}/${entityId}/${fileName}`);
         console.log('Storage ref:', storageRef);
         await uploadBytes(storageRef, blob);
@@ -38,8 +41,8 @@ const ImageUploader = ({ entityId, entityPath, images, onImagesUploaded }) => {
       await updateDoc(docRef, {
         images: arrayUnion(...uploadedImageUrls),
       });
-
       onImagesUploaded(uploadedImageUrls);
+      console.log('Images uploaded successfully!')
     } catch (error) {
       console.error('Error uploading images:', error);
     }

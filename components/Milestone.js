@@ -1,11 +1,44 @@
-import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Image, View, Text, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CheckBox } from 'react-native-elements';
 import Styles from '../styles/Styles';
 import Skills from './Skills';
+import { formatScheduledDate, getWeatherData } from '../helpers/milestoneHelpers';
 
-const Milestone = ({ item, index, toggleMilestoneStatus, renderMilestoneIcon, toggleSkillStatus, locationSelectionVisible }) => {
+
+
+const Milestone = ({ item, index, toggleMilestoneStatus, renderMilestoneIcon, toggleSkillStatus, locationSelectionVisible, onSchedule }) => {
+  const [weatherData, setWeatherData] = useState(null);
+
+  useEffect(() => {
+    const currentTime = Date.now();
+    const fiveDaysFuture = currentTime + 5 * 24 * 60 * 60 * 1000;
+    const scheduledAt = item.scheduledAt.seconds * 1000 + item.scheduledAt.nanoseconds / 1000000;
+    if (
+      scheduledAt &&
+      item.geo?.latitude &&
+      item.geo?.longitude &&
+      scheduledAt > currentTime &&
+      scheduledAt <= fiveDaysFuture
+    ) {
+      const fetchWeatherData = async () => {
+        try {
+          const weather = await getWeatherData(item.geo.latitude, item.geo.longitude, scheduledAt);
+          // Find the weather data closest to the scheduled date and time
+          const closestWeatherData = weather.list.reduce((prev, curr) => {
+            return Math.abs(curr.dt - item.scheduledAt.seconds) < Math.abs(prev.dt - item.scheduledAt.seconds) ? curr : prev;
+          });
+          console.log("Closest weather data:", closestWeatherData)
+          setWeatherData(closestWeatherData);
+        } catch (error) {
+          console.error("Error in fetchWeatherData:", error);
+        }
+      };
+      fetchWeatherData();
+    }
+  }, [item.scheduledAt, item.geo]);
+
 
   return (
     <View style={Styles.milestoneItemContainer} key={index}>
@@ -37,10 +70,27 @@ const Milestone = ({ item, index, toggleMilestoneStatus, renderMilestoneIcon, to
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity onPress={() => locationSelectionVisible(true)}>
-                  <Text style={{ color: '#AA77FF' }}>Select Location</Text>
+                  <Text style={Styles.locationLabel}>
+                  <MaterialCommunityIcons name='map-marker' size={16} color='white'/>
+                    Select Location
+                    </Text>
                 </TouchableOpacity>
               )}
+            <TouchableOpacity onPress={() => onSchedule(index)}>
+              <Text style={Styles.scheduleLabel}>
+              <MaterialCommunityIcons name='calendar-range' size={16} color='white'/>
+                {formatScheduledDate(item.scheduledAt)}
+              </Text>
+            </TouchableOpacity>
             </View>
+            
+            {weatherData && (
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Image source={{ uri: `http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png` }} style={Styles.weatherIcon} />
+                <Text style={Styles.weatherText}>{Math.round(weatherData.main.temp)}°C
+              </Text></View>
+            )}
+            
             <Skills skills={item.skills} milestoneIndex={index} toggleSkillStatus={toggleSkillStatus} />
           </View>
           <MaterialCommunityIcons

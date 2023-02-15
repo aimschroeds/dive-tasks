@@ -472,10 +472,65 @@ export default StyleSheet.create({
       locationLabel: {
         backgroundColor: '#AA77FF', // Choose the background color you prefer
         color: 'white', // Choose the text color you prefer
-        paddingHorizontal: 10,
+        paddingHorizontal: 6,
         paddingVertical: 4,
         borderRadius: 20, // This will make the corners very rounded
         marginBottom: 10,
+        marginLeft: -16,
       },
-      
+      scheduleLabel: {
+        backgroundColor: '#97DEFF', // Choose the background color you prefer
+        color: 'white', // Choose the text color you prefer
+        paddingHorizontal: 6,
+        paddingVertical: 4,
+        borderRadius: 20, // This will make the corners very rounded
+        marginBottom: 10,
+        marginLeft: 6,
+      },
+      profilePic: {
+        width: 100,
+        height: 100,
+        resizeMode: "cover",
+        borderRadius: 50,
+        marginLeft: "5%",
+      },
+      cellMinimalContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        padding: 2,
+        marginVertical: 1,
+      },
+      profileText: {
+        fontSize: 20,
+        fontWeight: "bold",
+        textAlign: "left",
+        alignSelf: "center",
+        // marginBottom: 10,
+      },
+      weatherIcon: {
+        width: 28,
+        height: 28,
+        resizeMode: "contain",
+        borderRadius: 14,
+        // marginLeft: "5%",
+        backgroundColor: "#62CDFF",
+        padding: 0,
+      },
+      weatherText: {
+        fontSize: 14,
+        textAlign: "left",
+        alignSelf: "center",
+        marginLeft: 10,
+        // marginBottom: 10,
+      },
+      modalContainer: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      modalImage: {
+        width: "100%",
+        height: "100%",
+      },
 });

@@ -11,11 +11,13 @@ export function getHeaderTitle(route) {
   switch (routeName) {
     case 'Plans':
       return 'Plans';
-    case 'Add Plan':
-      return 'Add Plan';
+    case 'Plan Form':
+      return 'Plan';
     case 'Plan':
       return 'Plan';
     case 'Home':
         return 'Home';
+    case 'Profile':
+      return 'Profile';
   }
 }

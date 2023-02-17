@@ -1,17 +1,24 @@
-import { View, Text, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
 import { Section, Cell } from "react-native-tableview-simple";
-
-import { auth } from "../firebase";
-import { signOut } from "firebase/auth";
-
-import Styles from "../styles/Styles";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
 
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Styles from "../styles/Styles";
+import { auth, signOut } from "../firebase";
 
+/**
+ * DeleteMilestone component for rendering the delete milestone button
+ * @component
+ * @param {Object} props - Component properties
+ * @param {Function} props.deleteMilestone - Function to handle milestone deletion
+ * @returns {React.Node} - DeleteMilestone component
+ */
 const DeleteMilestone = ({ deleteMilestone }) => {
-  
+  /**
+   * Render the DeleteMilestone component
+   * @returns {React.Node} - The DeleteMilestone component
+   */
   return (
     <Section
       hideSeparator
@@ -30,11 +37,21 @@ const DeleteMilestone = ({ deleteMilestone }) => {
             }}
           >
             <TouchableOpacity
-              style={[Styles.buttonLowkey, Styles.buttonPrimaryLarge, { flexDirection: "row", alignItems: "center" }]}
+              style={[
+                Styles.buttonLowkey,
+                Styles.buttonPrimaryLarge,
+                { flexDirection: "row", alignItems: "center" },
+              ]}
               onPress={() => deleteMilestone()}
             >
-              <MaterialCommunityIcons name="delete" size={20} color="#AA77FF" />
-              <Text style={[Styles.buttonTextLowkey, {marginLeft: 8}]}>Delete Milestone</Text>
+              <MaterialCommunityIcons
+                name="delete"
+                size={20}
+                color="#AA77FF"
+              />
+              <Text style={[Styles.buttonTextLowkey, { marginLeft: 8 }]}>
+                Delete Milestone
+              </Text>
             </TouchableOpacity>
           </View>
         }

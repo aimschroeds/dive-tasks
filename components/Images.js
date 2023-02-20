@@ -1,34 +1,61 @@
 import React, { useRef, useState } from "react";
 import { Modal, View, Image, ScrollView, TouchableOpacity } from "react-native";
-import Styles from "../styles/Styles";
-import { deleteImage } from "../utils/deleteImage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
+import Styles from "../styles/Styles";
+import { deleteImage } from "../utils/deleteImage";
+
+/**
+ * Images component for rendering images and handling image deletion
+ * @component
+ * @param {Object} props - Component properties
+ * @param {string} props.entityId - Entity ID
+ * @param {string} props.entityPath - Entity path
+ * @param {Array} props.images - Array of image URIs
+ * @param {Function} props.refreshImages - Function to refresh images
+ * @returns {React.Node} - Images component
+ */
 const Images = ({ entityId, entityPath, images, refreshImages }) => {
   const scrollViewRef = useRef();
   const [contentOffset, setContentOffset] = useState({ x: 0, y: 0 });
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalImage, setModalImage] = useState(null); 
+  const [modalImage, setModalImage] = useState(null);
 
+  /**
+   * Handle deleting an image
+   * @param {string} image - Image URI to delete
+   */
   const handleDeleteImage = async (image) => {
     try {
       await deleteImage(entityId, entityPath, image);
       // Refresh the images
-        refreshImages();
+      refreshImages();
     } catch (error) {
       console.error("Error deleting image:", error);
     }
   };
 
+  /**
+   * Handle opening the image modal
+   * @param {string} image - Image URI to display in modal
+   */
   const handleModalOpen = (image) => {
     setModalImage(image);
     setModalVisible(true);
-    };
+  };
 
-    const handleModalClose = () => {
+  /**
+   * Handle closing the image modal
+   */
+  const handleModalClose = () => {
     setModalImage(null);
     setModalVisible(false);
-    };
+  };
+
+  /**
+   * Render the Images component
+   * @returns {React.Node} - The Images component
+   */
 
   return (
     <View style={Styles.imageScrollContainer}>
@@ -58,7 +85,7 @@ const Images = ({ entityId, entityPath, images, refreshImages }) => {
         }}
         scrollEventThrottle={16}
       >
-        {images.map((image, index) => (
+        {images.slice().reverse().map((image, index) => (
           <View key={index} style={Styles.imageWrapper}>
             <TouchableOpacity
                 onPress={() => handleModalOpen(image)}

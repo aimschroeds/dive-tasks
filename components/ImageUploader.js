@@ -1,53 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import { TouchableOpacity, Text, View } from 'react-native';
-import Styles from '../styles/Styles';
-import { uploadBytes, getDownloadURL, ref } from 'firebase/storage';
-import { updateDoc, arrayUnion, doc } from 'firebase/firestore';
-import { db, storage } from '../firebase';
-import useImagePicker from '../hooks/useImagePicker';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import React, { useState, useEffect } from "react";
+import { TouchableOpacity, Text, View } from "react-native";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
+import Styles from "../styles/Styles";
+import useImagePicker from "../hooks/useImagePicker";
+import { handleImageUpload } from "../utils/handleImageUpload";
+
+/**
+ * ImageUploader component for uploading images to an entity
+ * @component
+ * @param {Object} props - Component properties
+ * @param {string} props.entityId - Entity ID
+ * @param {string} props.entityPath - Entity path
+ * @param {Array} props.images - Array of image URIs
+ * @param {Function} props.onImagesUploaded - Function to call after images have been uploaded
+ * @returns {React.Node} - ImageUploader component
+ */
 const ImageUploader = ({ entityId, entityPath, images, onImagesUploaded }) => {
-  const { selectedImages, pickImages } = useImagePicker();
-  
+  const { selectedImages, pickImages } = useImagePicker({
+    allowsMultipleSelection: true,
+    maxImagesCount: 10,
+    quality: 0.5,
+  });
+
+  // Upload selected images when available
   useEffect(() => {
     if (selectedImages.length > 0) {
-      console.log('Selected images:', selectedImages);
-      handleImageUpload(selectedImages);
+      console.log("Selected images:", selectedImages);
+      handleImageUpload(entityId, entityPath, selectedImages, onImagesUploaded);
     }
   }, [selectedImages]);
 
-  const handleImageUpload = async (images) => {
-    try {
-      const uploadedImageUrls = [];
-
-      for (const image of images) {
-        const response = await fetch(image.uri);
-        const blob = await response.blob();
-        // Set filename to current timestamp + number of image in array
-        const fileName = `${new Date().getTime()}_${images.indexOf(image)}`;
-        // const fileName = new Date().getTime();
-        const storageRef = ref(storage, `${entityPath}/${entityId}/${fileName}`);
-        console.log('Storage ref:', storageRef);
-        await uploadBytes(storageRef, blob);
-        const imageUrl = await getDownloadURL(storageRef);
-        console.log('Image URL:', imageUrl);
-        uploadedImageUrls.push(imageUrl);
-        console.log('Uploaded image URLs:', uploadedImageUrls);
-
-      }
-
-      const docRef = doc(db, entityPath, entityId);
-      await updateDoc(docRef, {
-        images: arrayUnion(...uploadedImageUrls),
-      });
-      onImagesUploaded(uploadedImageUrls);
-      console.log('Images uploaded successfully!')
-    } catch (error) {
-      console.error('Error uploading images:', error);
-    }
-  };
-
+  /**
+   * Render the ImageUploader component
+   * @returns {React.Node} - The ImageUploader component
+   */
   return (
     <View style={Styles.uploadImageContainer}>
       <TouchableOpacity onPress={pickImages}>

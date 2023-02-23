@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Image, View, Text, TouchableOpacity } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CheckBox } from 'react-native-elements';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 import Styles from '../styles/Styles';
 import Skills from './Skills';
 import { formatScheduledDate, getWeatherData } from '../helpers/milestoneHelpers';
 
-
-
+/**
+ * Milestone component to display a single milestone
+ * @component
+ * @param {Object} props - Props containing milestone data and various callback functions
+ * @returns {React.Node} - Milestone component
+ */
 const Milestone = ({ item, index, toggleMilestoneStatus, renderMilestoneIcon, toggleSkillStatus, locationSelectionVisible, onSchedule }) => {
   const [weatherData, setWeatherData] = useState(null);
 
@@ -39,6 +44,10 @@ const Milestone = ({ item, index, toggleMilestoneStatus, renderMilestoneIcon, to
     }
   }, [item.scheduledAt, item.geo]);
 
+  /**
+   * Render the Milestone component
+   * @returns {React.Node} - The Milestone component
+   */
 
   return (
     <View style={Styles.milestoneItemContainer} key={index}>

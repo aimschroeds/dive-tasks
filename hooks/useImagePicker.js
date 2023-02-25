@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 
-const useImagePicker = () => {
+const useImagePicker = (options) => {
   const [selectedImages, setSelectedImages] = useState([]);
 
   const pickImages = async () => {
@@ -13,16 +13,13 @@ const useImagePicker = () => {
 
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsMultipleSelection: true,
-      maxImagesCount: 10,
-      quality: 0.5,
+      ...options,
     });
 
     if (!result.canceled) {
-      setSelectedImages(result.assets);
+      setSelectedImages(result.assets || [result]);
     }
   };
-
   return { selectedImages, pickImages };
 };
 

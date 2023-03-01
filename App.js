@@ -23,6 +23,7 @@ import { getHeaderTitle } from "./helpers/getHeaderTitle";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import GetHeaderRightButton from "./components/GetHeaderRightButton";
 import * as Calendar from 'expo-calendar';
+import OtherProfileView from "./views/OtherProfileView";
 
 const Stack = createStackNavigator();
 
@@ -34,8 +35,6 @@ export default function App() {
       const { status } = await Calendar.requestCalendarPermissionsAsync();
       if (status === 'granted') {
         const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
-        console.log('Here are all your calendars:');
-        console.log({ calendars });
       }
     })();
   }, []);
@@ -80,7 +79,10 @@ export default function App() {
             name='View Plan' 
             component={PlanView} 
           />
-          
+          <Stack.Screen
+            name='Other Profile'
+            component={OtherProfileView}
+          />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

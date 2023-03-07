@@ -149,7 +149,7 @@ const UserProfile = ({ navigation }) => {
             </View>
 
             <View style={Styles.pickerContainer}>
-            <Text style={{paddingTop: 160}}>Certification Level: </Text>
+            <Text style={{marginTop: 160}}>Certification Level: </Text>
             <Picker
                 selectedValue={certificationLevel}
                 onValueChange={(itemValue) => {

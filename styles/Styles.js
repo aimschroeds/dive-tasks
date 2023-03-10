@@ -81,13 +81,15 @@ export default StyleSheet.create({
       uploadImageButtonContainer: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: 20,
+        marginBottom: 10,
+        marginTop: 20,
       },
       uploadImageButton: {
         backgroundColor: '#AA77FF',
         paddingHorizontal: 20,
         paddingVertical: 10,
         borderRadius: 10,
+        // marginTop: 100,
       },
       uploadImageButtonText: {
         color: '#FFF',
@@ -533,4 +535,82 @@ export default StyleSheet.create({
         width: "100%",
         height: "100%",
       },
+      displayName: {
+        marginTop: 16,
+        fontSize: 18,
+        fontFamily: "Helvetica",
+        fontWeight: "bold",
+        color: "black",
+      },
+      profileImage: {
+        width: 128,
+        height: 128,
+        borderRadius: 64,
+      },
+        editIcon: {
+          position: 'absolute',
+          bottom: 2,
+          right: 2,
+          backgroundColor: '#AA77FF',
+          borderRadius: 50,
+          padding: 4,
+        },
+        profileContainer: {
+          alignItems: 'flex-start',
+          paddingHorizontal: 20,
+          paddingTop: 20,
+        },
+        
+        profileImageContainer: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: 20,
+        },
+        
+        switchContainer: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          // marginBottom: 20,
+          marginTop: 20,
+        },
+        
+        pickerContainer: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          marginBottom: 20,
+          // alignContent: 'center',
+        },
+        
+        picker: {
+          height: 50,
+          flex: 1,
+        },
+        
+        searchUserItem: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingHorizontal: 10,
+          paddingVertical: 5,
+          marginBottom: 10,
+          backgroundColor: '#F5F5F5',
+          borderRadius: 5,
+          width: '100%',
+        },
+        
+        searchUserImage: {
+          width: 48,
+          height: 48,
+          borderRadius: 24,
+          marginRight: 10,
+        },
+        
+        searchUserDisplayName: {
+          fontSize: 18,
+          textAlign: 'left',
+        },
+        
+        
 });

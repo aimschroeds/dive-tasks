@@ -18,6 +18,7 @@ import PlanFormView from "./views/PlanFormView";
 import PlanView from "./views/PlanView";
 import LocationNew from "./views/LocationNew";
 import LocationSelection from "./views/LocationSelection";
+import NotificationDrawer from "./views/NotificationDrawer";
 
 import { getHeaderTitle } from "./helpers/getHeaderTitle";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -39,6 +40,19 @@ export default function App() {
     })();
   }, []);
 
+  // Set user state when authentication state changes
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+      setLoading(false);
+    });
+    return unsubscribe;
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -50,7 +64,7 @@ export default function App() {
                 headerShown: true,
                 title: getHeaderTitle(route),
                 headerRight: () =>
-                  <GetHeaderRightButton route={route} />,
+                  <GetHeaderRightButton route={route} user={user}/>,
               })}
           />
           <Stack.Screen
@@ -83,6 +97,7 @@ export default function App() {
             name='Other Profile'
             component={OtherProfileView}
           />
+          <Stack.Screen name="Notifications" component={NotificationDrawer} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

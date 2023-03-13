@@ -19,5 +19,7 @@ export function getHeaderTitle(route) {
         return 'Home';
     case 'Profile':
       return 'Profile';
+    case 'Search Users':
+      return 'Find Friends';
   }
 }

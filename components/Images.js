@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Modal, View, Image, ScrollView, TouchableOpacity } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -20,6 +20,15 @@ const Images = ({ entityId, entityPath, images, refreshImages }) => {
   const [contentOffset, setContentOffset] = useState({ x: 0, y: 0 });
   const [modalVisible, setModalVisible] = useState(false);
   const [modalImage, setModalImage] = useState(null);
+  const [imagesDeletable, setImagesDeletable] = useState(false);
+  
+  useEffect(() => {
+    // If entityPath is undefined, the images are not deletable
+    if (entityPath) {
+        setImagesDeletable(true);
+    }
+    }, [entityPath]);
+
 
   /**
    * Handle deleting an image
@@ -91,12 +100,12 @@ const Images = ({ entityId, entityPath, images, refreshImages }) => {
                 onPress={() => handleModalOpen(image)}
             >
             <Image source={{ uri: image }} style={Styles.image} />
-            <TouchableOpacity
+            { imagesDeletable && <TouchableOpacity
               style={Styles.imageDeleteButton}
               onPress={() => handleDeleteImage(image)}
             >
               <MaterialCommunityIcons name="delete" size={24} color="white" />
-            </TouchableOpacity>
+            </TouchableOpacity>}
             </TouchableOpacity>
           </View>
         ))}

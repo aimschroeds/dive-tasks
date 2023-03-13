@@ -7,7 +7,7 @@ import { db, auth } from '../firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
 
-const getUnreadNotificationsCount = async (userId) => {
+export const getUnreadNotificationsCount = async (userId) => {
   console.log('getUnreadNotificationsCount', userId)
   const notificationsRef = collection(db, 'notifications');
   const q = query(
@@ -43,14 +43,20 @@ const GetHeaderRightButton = (props) => {
 
   useEffect(() => {
     const fetchUnreadNotificationsCount = async () => {
-      console.log("fetchUnreadNotificationsCount")
-      const count = await getUnreadNotificationsCount(user.uid);
-      setUnreadNotificationsCount(count);
-      console.log(count)
-    };
+        console.log("fetchUnreadNotificationsCount1: ", user.uid)
+        const count = await getUnreadNotificationsCount(user.uid);
+        setUnreadNotificationsCount(count);
+        console.log(count)
+      };
 
-    fetchUnreadNotificationsCount();
-  }, []);
+    if (user?.uid)
+    {
+      fetchUnreadNotificationsCount();
+      console.log("useEffect fetchUnreadNotificationsCount: ", user?.uid)
+    }
+
+    
+  }, [user]);
 
   /**
    * Render the GetHeaderRightButton component

@@ -19,6 +19,9 @@ import PlanView from "./views/PlanView";
 import LocationNew from "./views/LocationNew";
 import LocationSelection from "./views/LocationSelection";
 import NotificationDrawer from "./views/NotificationDrawer";
+import DiveForm from "./views/DiveForm";
+import DiveView from "./views/DiveView";
+import CompletedPlanView from "./views/CompletedPlanView";
 
 import { getHeaderTitle } from "./helpers/getHeaderTitle";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -87,6 +90,7 @@ export default function App() {
           <Stack.Screen name='Plan Form' component={PlanFormView} />
           <Stack.Screen name='Location New' component={LocationNew} />
           <Stack.Screen name='Location Selection' component={LocationSelection} />
+          <Stack.Screen name='Dive Form' component={DiveForm} />
         </Stack.Group>
         <Stack.Group>
           <Stack.Screen 
@@ -97,7 +101,9 @@ export default function App() {
             name='Other Profile'
             component={OtherProfileView}
           />
-          <Stack.Screen name="Notifications" component={NotificationDrawer} />
+          <Stack.Screen name='Notifications' component={NotificationDrawer} />
+          <Stack.Screen name='Dive' component={DiveView} />
+          <Stack.Screen name='Completed Plan' component={CompletedPlanView} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

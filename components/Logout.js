@@ -32,7 +32,7 @@ const Logout = () => {
    * @returns {React.Node} - The Logout component
    */
   return (
-    <View style={{ alignItems: "center", marginTop: -55 }}>
+    <View style={{ alignItems: "center" }}>
       {/* Log out button */}
       <TouchableOpacity
         onPress={handleLogOut}

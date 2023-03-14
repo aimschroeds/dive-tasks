@@ -21,5 +21,10 @@ export function getHeaderTitle(route) {
       return 'Profile';
     case 'Search Users':
       return 'Find Friends';
+    case 'Dive Form':
+      return 'Log Dive';
+      // add default case
+    default:
+      return 'Home';
   }
 }

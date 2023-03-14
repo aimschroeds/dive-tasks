@@ -9,6 +9,7 @@ import PlansView from '../views/PlansView';
 import PlanFormView from '../views/PlanFormView';
 import ProfileView from '../views/ProfileView';
 import SearchUsersView from '../views/SearchUsersView';
+import DiveForm from '../views/DiveForm';
 
 import { auth } from '../firebase';
 
@@ -37,6 +38,16 @@ function NavigationMain() {
                 ),
             }}
       />    
+      <Tab.Screen 
+        name='Dive Form'
+        component={DiveForm}
+        options={{
+          tabBarLabel: 'Log Dive',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="diving-scuba" color={color} size={26} />
+          ),
+        }}
+      />
       <Tab.Screen
           name='Plans'
           component={PlansView}
@@ -47,6 +58,16 @@ function NavigationMain() {
                 ),
             }}
       />    
+      <Tab.Screen 
+        name='Search'
+        component={SearchUsersView}
+        options={{
+          tabBarLabel: 'Search',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="account-search" color={color} size={26} />
+          ),
+        }}
+      />
       <Tab.Screen
           name='Profile'
           component={ProfileView}
@@ -56,16 +77,6 @@ function NavigationMain() {
                 <MaterialCommunityIcons name="account" color={color} size={26} />
                 ),
             }}
-      />
-      <Tab.Screen 
-        name='Search Users'
-        component={SearchUsersView}
-        options={{
-          tabBarLabel: 'Search Users',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account-search" color={color} size={26} />
-          ),
-        }}
       />
     </Tab.Navigator>
     );}

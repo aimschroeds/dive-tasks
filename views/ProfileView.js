@@ -10,6 +10,7 @@ import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { handleImageUpload } from '../utils/handleImageUpload';
 import useImagePicker from '../hooks/useImagePicker';
+import Logout from '../components/Logout';
 
 import Styles from '../styles/Styles';
 
@@ -133,7 +134,8 @@ const UserProfile = ({ navigation }) => {
             returnKeyType="done"
             ></TextInput>
         )}
-        <View style={Styles.profileContainer}>
+        <View style={[Styles.profileContainer]}>
+        
         <View style={Styles.switchContainer}>
             <Text>Can other user's search for you in-app? </Text>
             <Switch
@@ -149,7 +151,7 @@ const UserProfile = ({ navigation }) => {
             </View>
 
             <View style={Styles.pickerContainer}>
-            <Text style={{marginTop: 160}}>Certification Level: </Text>
+            <Text>Certification Level: </Text>
             <Picker
                 selectedValue={certificationLevel}
                 onValueChange={(itemValue) => {
@@ -167,7 +169,9 @@ const UserProfile = ({ navigation }) => {
                 <Picker.Item label="Scubamaster" value="Scubamaster" />
             </Picker>
             </View>
+            
                 </View>
+                <Logout/>
       </View>
     );
   };

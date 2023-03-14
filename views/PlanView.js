@@ -17,7 +17,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 
 // Firebase imports
-import { doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { doc, getDoc, updateDoc, arrayUnion, serverTimestamp } from "firebase/firestore";
 import { db, auth, storage } from "../firebase";
 import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
 
@@ -72,9 +72,17 @@ const PlanView = ({ route }) => {
   // Check if the plan is completed and trigger the celebration
   useEffect(() => {
     if (milestoneCompletion.percentage === 100) {
-      showCelebration();
+      // Update the 'published' field in the database if not already published
+    if (!plan.published) {
+        const docRef = doc(db, "plans", planId);
+        updateDoc(docRef, { published: true, completedAt: serverTimestamp() }).then(() => {
+        setPlan({ ...plan, published: true });
+        showCelebration();
+      });
     }
-  }, [milestoneCompletion.percentage]);
+      
+    }
+  }, [milestoneCompletion.percentage, plan]);
 
   useEffect(() => {
     // Check if plan.images exists
@@ -208,6 +216,17 @@ const PlanView = ({ route }) => {
           };
           setPlan(updatedPlan);
         } else {
+          setPlan(docSnap.data());
+        }
+        if (!docSnap.data().published)
+        {
+          const updatedPlan = {
+            ...docSnap.data(),
+            published: false,
+          };
+          setPlan(updatedPlan);
+        } else 
+        {
           setPlan(docSnap.data());
         }
         setErrorMessage(null);

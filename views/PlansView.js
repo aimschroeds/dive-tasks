@@ -105,7 +105,7 @@ const PlansView = ({ route, navigation }) => {
               <TouchableOpacity key={plan.id} onPress={() => navigation.navigate('View Plan', { planId: plan.id })}>
                 <View style={Styles.planContainer}>
                   <AnimatedCircularProgress
-                    size={50}
+                    size={60}
                     width={5}
                     fill={completionPercentage}
                     tintColor={completionPercentage === 100 ? 'green' : '#3498db'}

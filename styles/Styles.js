@@ -587,6 +587,7 @@ export default StyleSheet.create({
         picker: {
           height: 50,
           flex: 1,
+          marginBottom: 180,
         },
         
         searchUserItem: {

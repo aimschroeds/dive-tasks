@@ -43,11 +43,16 @@ const GetHeaderRightButton = (props) => {
 
   useEffect(() => {
     const fetchUnreadNotificationsCount = async () => {
-        console.log("fetchUnreadNotificationsCount1: ", user.uid)
+      try {
+        console.log("fetchUnreadNotificationsCount1: ", user.uid);
         const count = await getUnreadNotificationsCount(user.uid);
         setUnreadNotificationsCount(count);
-        console.log(count)
-      };
+        console.log(count);
+      } catch (error) {
+        console.error('Error in fetchUnreadNotificationsCount:', error);
+      }
+    };
+    
 
     if (user?.uid)
     {

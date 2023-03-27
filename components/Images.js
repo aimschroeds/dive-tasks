@@ -99,7 +99,7 @@ const Images = ({ entityId, entityPath, images, refreshImages }) => {
             <TouchableOpacity
                 onPress={() => handleModalOpen(image)}
             >
-            <Image source={{ uri: image }} style={Styles.image} />
+            <Image source={{ uri: image }} style={Styles.image} testID={`image-${index}`}/>
             { imagesDeletable && <TouchableOpacity
               style={Styles.imageDeleteButton}
               onPress={() => handleDeleteImage(image)}
@@ -136,10 +136,12 @@ const Images = ({ entityId, entityPath, images, refreshImages }) => {
             style={Styles.modalContainer}
             onPress={handleModalClose}
             activeOpacity={1}
+            testID="modal-container"
             >
                 <Image source={{ uri: modalImage }} 
                 style={Styles.modalImage} 
                 resizeMode="contain"
+                testID="modal-image"
                 />
             </TouchableOpacity>
         </Modal>

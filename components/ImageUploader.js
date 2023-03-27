@@ -37,7 +37,7 @@ const ImageUploader = ({ entityId, entityPath, images, onImagesUploaded }) => {
    */
   return (
     <View style={Styles.uploadImageContainer}>
-      <TouchableOpacity onPress={pickImages}>
+      <TouchableOpacity onPress={pickImages} testID="upload-button">
         <MaterialCommunityIcons
           name="image-plus"
           size={48}

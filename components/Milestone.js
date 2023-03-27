@@ -19,6 +19,7 @@ const Milestone = ({ item, index, toggleMilestoneStatus, renderMilestoneIcon, to
   useEffect(() => {
     const currentTime = Date.now();
     const fiveDaysFuture = currentTime + 5 * 24 * 60 * 60 * 1000;
+    if (item?.scheduledAt?.seconds) {
     const scheduledAt = item.scheduledAt.seconds * 1000 + item.scheduledAt.nanoseconds / 1000000;
     if (
       scheduledAt &&
@@ -42,6 +43,7 @@ const Milestone = ({ item, index, toggleMilestoneStatus, renderMilestoneIcon, to
       };
       fetchWeatherData();
     }
+  }
   }, [item.scheduledAt, item.geo]);
 
   /**

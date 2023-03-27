@@ -83,18 +83,41 @@ const DiveItem = ({ diveId }) => {
               { displayName && <Text style={styles.displayName}>{displayName}</Text> }
               {dive?.startTime && <Text style={styles.startTime}>{formatStartTime(dive.startTime)}</Text> }
               </View>
-              
             </View>
-            
             {dive?.images && <Images images={dive.images} /> }
             <View style={styles.row}>
-              {bottomTime && <Text style={[styles.attributeText, {marginHorizontal: 30, marginVertical: 13,}]}>{bottomTime} min</Text> }
-              {pressureUsed && <Text style={[styles.attributeText, {marginHorizontal: 30,}]}>{pressureUsed} bar</Text> }
+              {bottomTime && 
+                <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+                  <MaterialCommunityIcons name="clock-outline" size={32} color={"#AA77FF"} />
+                  <Text style={[styles.attributeText, {marginHorizontal: 30, marginBottom: 10,}]}>{bottomTime} min</Text> 
+                </View>
+              }
+              {pressureUsed && 
+                <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+                  <MaterialCommunityIcons name="gas-cylinder" size={32} color={"#AA77FF"} />
+                  <Text style={[styles.attributeText, {marginHorizontal: 30,}]}>{pressureUsed} bar</Text> 
+                </View>
+              }
             </View>
             <View style={styles.row}>
-            {dive?.maxDepth && <Text style={styles.attributeText}>{dive.maxDepth} m</Text> }
-            {dive?.visibility && <Text style={[styles.attributeText, {marginHorizontal: 35,}]}>{dive.visibility} m</Text> }
-            {dive?.waterTemperature && <Text style={styles.attributeText}>{dive.waterTemperature} °C</Text> }
+            {dive?.maxDepth && 
+              <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+                <MaterialCommunityIcons name="arrow-down-bold" size={32} color={"#AA77FF"} />
+                <Text style={styles.attributeText}>{dive.maxDepth} m</Text> 
+              </View>
+            }
+            {dive?.visibility && 
+            <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+              <MaterialCommunityIcons name="eye" size={32} color={"#AA77FF"} />
+              <Text style={[styles.attributeText, {marginHorizontal: 35,}]}>{dive.visibility} m</Text> 
+            </View>
+            }
+            {dive?.waterTemperature && 
+            <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+              <MaterialCommunityIcons name="thermometer" size={32} color={"#AA77FF"} />
+              <Text style={styles.attributeText}>{dive.waterTemperature} °C</Text> 
+            </View>
+            }
             </View>
             <View style={styles.row}>
             {diveConditions?.entryType && (
@@ -124,8 +147,8 @@ const DiveItem = ({ diveId }) => {
   
   const styles = StyleSheet.create({
     container: {
-      borderWidth: 1,
-      borderColor: '#C9EEFF',
+      borderWidth: 2,
+      borderColor: '#AA77FF',
       borderRadius: 10,
       padding: 10,
       marginBottom: 20,

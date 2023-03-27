@@ -168,6 +168,8 @@ const DiveForm = ({ navigation }) => {
         mode="datetime"
         onConfirm={handleStartTimePicked}
         onCancel={hideStartTimePicker}
+        display="inline"
+        isDarkModeEnabled={true}
         />
 
         <TouchableOpacity onPress={showEndTimePicker} style={{alignContent: "center"}}>
@@ -182,6 +184,8 @@ const DiveForm = ({ navigation }) => {
         mode="datetime"
         onConfirm={handleEndTimePicked}
         onCancel={hideEndTimePicker}
+        display="inline"
+        isDarkModeEnabled={true}
         />
 
     <TextInput

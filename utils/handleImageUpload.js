@@ -4,7 +4,10 @@ import { db, storage } from '../firebase';
 
 export const handleImageUpload = async (entityId, entityPath, inputImage, onImageUploaded) => {
   try {
+    // console.log('inputImage:', inputImage); 
+
     const images = Array.isArray(inputImage) ? inputImage : [inputImage];
+    console.log('images:', images);
     const uploadedImageUrls = [];
 
     for (const image of images) {
@@ -16,9 +19,11 @@ export const handleImageUpload = async (entityId, entityPath, inputImage, onImag
       const imageUrl = await getDownloadURL(storageRef);
       uploadedImageUrls.push(imageUrl);
     }
-
-    // const docRef = doc(db, entityPath, entityId);
-    // await updateDoc(docRef, { images: arrayUnion(...uploadedImageUrls) });
+    // console.log('uploadedImageUrls:', uploadedImageUrls)
+    if (entityPath === 'plans') {
+      const docRef = doc(db, entityPath, entityId);
+      await updateDoc(docRef, { images: arrayUnion(...uploadedImageUrls) });
+    }
     onImageUploaded(uploadedImageUrls);
     console.log('Image(s) saved successfully!');
   } catch (error) {

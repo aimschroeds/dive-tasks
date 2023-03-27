@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList } from 'react
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { db, auth } from "../firebase";
-import { collection, doc, getDoc, getDocs, query, where, orderBy, updateDoc } from 'firebase/firestore';
+import { collection, doc, docRef, getDoc, getDocs, query, where, orderBy, updateDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from "firebase/auth";
 
 const NotificationDrawer = ({ navigation }) => {
@@ -25,35 +25,45 @@ const NotificationDrawer = ({ navigation }) => {
   useEffect(() => {
     const fetchNotifications = async () => {
         if (currentUserId) {
-          const notificationsRef = collection(db, "notifications");
-          const q = query(
-            notificationsRef,
-            where("recipientId", "==", currentUserId),
-            orderBy("timestamp", "desc")
-          );
-      
-          const querySnapshot = await getDocs(q);
-      
-          // Fetch sender user data for each notification
-          const fetchedNotifications = await Promise.all(
-            querySnapshot.docs.map(async doc => {
-              const notificationData = doc.data();
-              const senderDocRef = doc(db, "users", notificationData.senderId);
-              const senderDocSnap = await getDoc(senderDocRef);
-      
-              return {
-                ...notificationData,
-                id: doc.id,
-                senderProfilePicture: senderDocSnap.data().image_url,
-                senderDisplayName: senderDocSnap.data().display_name,
-              };
-            })
-          );
-      
-          setNotifications(fetchedNotifications);
+            try
+            {
+                    const notificationsRef = collection(db, "notifications");
+                    const q = query(
+                    notificationsRef,
+                    where("recipientId", "==", currentUserId),
+                    orderBy("timestamp", "desc")
+                );
+                
+                const querySnapshot = await getDocs(q);
+            
+                // Fetch sender user data for each notification
+                const fetchedNotifications = await Promise.all(
+                    querySnapshot.docs.map(async doc => {
+                        const notificationData = doc.data();
+                        console.log("notificationData: ", notificationData.senderId)
+                        const senderDoc = doc(db, "users", notificationData.senderId);
+                        console.log("senderDocRef: ", senderDoc)
+                        const senderDocSnap = await getDoc(senderDoc);
+                        console.log("senderDocSnap: ", senderDocSnap)
+                        if (!senderDocSnap.exists()) {
+                            console.log("No such document!");
+                        } else {
+                        return {
+                            ...notificationData,
+                            id: doc.id,
+                            senderProfilePicture: senderDocSnap.data().image_url,
+                            senderDisplayName: senderDocSnap.data().display_name,
+                        };
+                        }
+                    })
+                );
+                setNotifications(fetchedNotifications);
+            }
+            catch (error) {
+            console.log(error);
+            }
         }
       };      
-
     fetchNotifications();
   }, [currentUserId]);
 

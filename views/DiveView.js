@@ -8,7 +8,7 @@ const DiveView = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <DiveItem diveId={diveId} />
+      <DiveItem diveId={diveId} testID="dive-item"/>
     </View>
   );
 };
@@ -19,6 +19,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'flex-start',
+    marginHorizontal: 10,
+    paddingHorizontal: 10,
   },
 });
 

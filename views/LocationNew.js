@@ -1,3 +1,5 @@
+// Note: This is an adaptation of the code produced for the Mobile Development course 
+// It is not an original work
 import {
     ActivityIndicator,
     Dimensions,

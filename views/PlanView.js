@@ -88,7 +88,6 @@ const PlanView = ({ route }) => {
     // Check if plan.images exists
     if (plan?.images) {
       fetchImageUrls();
-      // console.log("plan: ", plan);
     }
   }, [plan]);
 
@@ -312,7 +311,9 @@ const PlanView = ({ route }) => {
   };
 
   const updateNotes = async (text) => {
-    // console.log("Updating notes:", text);
+    // Set the default value to an empty string if text is undefined
+    text = text !== undefined ? text : '';
+  
     try {
       const docRef = doc(db, "plans", planId);
       await updateDoc(docRef, {
@@ -324,6 +325,7 @@ const PlanView = ({ route }) => {
       setErrorMessage("Error updating notes");
     }
   };
+  
 
   const updateLocation = async (location, milestoneIndex) => {
     // console.log("Updating milestone location:", location)
@@ -349,6 +351,7 @@ const PlanView = ({ route }) => {
   };
 
   const handleImagesUploaded = (uploadedImageUrls) => {
+    console.log("handleImagesUploaded-Uploaded images:", uploadedImageUrls)
     setPlan({ ...plan, images: [...plan.images, ...uploadedImageUrls] });
   };
 
@@ -401,6 +404,8 @@ const PlanView = ({ route }) => {
                         mode="datetime"
                         onConfirm={(date) => scheduleMilestone(date, selectedMilestoneDateIndex)}
                         onCancel={() => selectedMilestoneDateIndex(null)}
+                        display="inline"
+                        isDarkModeEnabled={true}
                       />
                       </View>
                   ))}
@@ -412,7 +417,7 @@ const PlanView = ({ route }) => {
                   images={plan.images}
                   onImagesUploaded={(images)=>handleImagesUploaded(images)}
                 />
-                { plan.images.length > 0 && <Images
+                { plan.images?.length > 0 && <Images
                   images={plan.images}
                   entityId={planId}
                   entityPath="plans"

@@ -87,7 +87,7 @@ const Plan = ({ planId }) => {
 
   // If loading return ActivityIndicator
   if (loading) {
-    return <ActivityIndicator />;
+    return <ActivityIndicator testID="plan-loading-indicator" />;
   }
 
 
@@ -119,8 +119,8 @@ const Plan = ({ planId }) => {
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,
-    borderColor: '#C9EEFF',
+    borderWidth: 2,
+    borderColor: '#62CDFF',
     borderRadius: 10,
     padding: 10,
     marginBottom: 20,

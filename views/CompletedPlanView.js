@@ -6,7 +6,7 @@ const CompletedPlanView = ({ route }) => {
   const { planId } = route.params;
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="container">
       <PlanItem planId={planId} />
     </View>
   );

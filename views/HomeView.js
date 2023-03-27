@@ -7,6 +7,10 @@ import React, { useEffect, useState } from 'react';
 import { auth, db } from '../firebase';
 import { useNavigation } from '@react-navigation/native';
 import { collection, doc, getDoc, onSnapshot, query, where, orderBy } from 'firebase/firestore';
+import {getFriends} from '../helpers/friendsHelpers';
+import PlanItem from '../components/PlanItem';
+import DiveItem from '../components/DiveItem';
+import { ScrollView } from 'react-native-gesture-handler';
 
 /**
  * Home screen
@@ -14,53 +18,84 @@ import { collection, doc, getDoc, onSnapshot, query, where, orderBy } from 'fire
  * @returns {JSX.Element}
  */
 
-const HomeView = () => {
-    const navigation = useNavigation();
+const HomeView = ({ navigation }) => {
     const [userId, setUserId] = useState(null);
     const [dives, setDives] = useState(null);
     const [plans, setPlans] = useState(null);
+    const [friends, setFriends] = useState(null);
+    const [feed, setFeed] = useState(null);
+
+    useEffect(() => {
+        if (userId) {
+        const fetchFriends = async () =>{
+            try {
+                const _friends = await getFriends(userId);
+                setFriends(_friends);
+                console.log('Home: Friends ' + friends);
+            } catch (error) {
+                console.error('Error fetching friend data:', error);
+            }
+            }
+            if (userId)
+            {
+                fetchFriends();
+            }
+        }
+    }, [userId, navigation]);
 
     
     useEffect(() => {
-        if (userId) {
-            // Get dives logged by user or by any of their friends
+        if (userId && friends) {
+          const usersToQuery = [userId, ...friends];
           const unsubscribe = onSnapshot(
             query(
               collection(db, "dives"),
-              where("userId", "==", userId),
+              where("userId", "in", usersToQuery),
               orderBy("startTime", "desc")
             ),
             (querySnapshot) => {
               const dives = [];
               querySnapshot.forEach((doc) => {
-                dives.push({ ...doc.data(), id: doc.id });
+                dives.push({ id: doc.id, type: 'dive' });
               });
               setDives(dives);
             }
           );
           return () => unsubscribe();
         }
-      }, [userId]);
+      }, [userId, friends]);
 
       useEffect(() => {
-        if (userId) {
-          // Get plans completed by user
-            const unsubscribe = onSnapshot(
-                query(
-                    collection(db, "plans"),
-                    where("userId", "==", userId),
-                    orderBy("completedAt", "desc")
-                ),
-                (querySnapshot) => {
-                    const plans = [];
-                    querySnapshot.forEach((doc) => {
-                        plans.push({ ...doc.data(), id: doc.id });
-                    });
-                    setPlans(plans);
-                });
-            return () => unsubscribe();
+        if (userId && friends) {
+          const usersToQuery = [userId, ...friends];
+          const unsubscribe = onSnapshot(
+            query(
+              collection(db, "plans"),
+              where("userId", "in", usersToQuery),
+              orderBy("completedAt", "desc")
+            ),
+            (querySnapshot) => {
+              const plans = [];
+              querySnapshot.forEach((doc) => {
+                plans.push({ id: doc.id, type: 'plan' });
+              });
+              setPlans(plans);
+            }
+          );
+          return () => unsubscribe();
         }
-      }, [userId]);
+      }, [userId, friends]);
+
+      useEffect(() => {
+        if (dives && plans) {
+          const mergedList = [...dives, ...plans].sort((a, b) => {
+            const timestampA = a.type === 'dive' ? a.startTime : a.completedAt;
+            const timestampB = b.type === 'dive' ? b.startTime : b.completedAt;
+            return timestampA - timestampB;
+          });
+          setFeed(mergedList);
+        }
+      }, [dives, plans]);
 
     useEffect(() => {
         // Listen for auth state changes
@@ -78,28 +113,35 @@ const HomeView = () => {
     }, [navigation]);
 
     return (
-        <View style={Styles.container}>
-            <View style={Styles.container}>
-                <Text style={Styles.title}>Home</Text>
-                <Text style={Styles.text}>Welcome to Dive Tasks!</Text>
-                <Text style={Styles.text}>This is the home screen.</Text>
-                <Text style={Styles.text}>You are logged in.</Text>
-                {/* List of dive ids that link via Touchable Opacity to DiveView when tapped */}
-                {dives && dives.map((dive) => (
-                    <TouchableOpacity key={dive.id} onPress={() => navigation.navigate('Dive', { diveId: dive.id })}>
-                        <Text style={Styles.text}>{dive.id}</Text>
-                    </TouchableOpacity>
-                ))}
-                <Text style={Styles.text}>Plans</Text>
-                {/* List of plan ids that link via Touchable Opacity to PlanView when tapped */}
-                {plans && plans.map((plan) => (
-                    <TouchableOpacity key={plan.id} onPress={() => navigation.navigate('Completed Plan', { planId: plan.id })}>
-                        <Text style={Styles.text}>{plan.id}</Text>
-                    </TouchableOpacity>
-                ))}
-            </View>
-            <Logout />
-        </View>
+        
+            <ScrollView><View style={[Styles.container, {marginHorizontal: 20,}]}>
+                {/* Combined list of dives and plans */}
+                { feed && feed.length > 0 && feed.map((item) => {
+                const uniqueKey = `${item.type}-${item.id}`;
+                if (item.type === 'dive') {
+                    return (
+                    <DiveItem
+                        key={uniqueKey}
+                        diveId={item.id}
+                        onPress={() =>
+                        navigation.navigate('Dive', { diveId: item.id })
+                        }
+                    />
+                    );
+                } else {
+                    return (
+                    <PlanItem
+                        key={uniqueKey}
+                        planId={item.id}
+                        onPress={() =>
+                        navigation.navigate('Completed Plan', { planId: item.id })
+                        }
+                    />
+                    );
+                }
+                })}
+             </View></ScrollView>
+       
     )};
 
 export default HomeView;
